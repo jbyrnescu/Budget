@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import finance.Logger;
 
 public class ColumnMap<K, V> {
 	Map<String, String> columnMap;
@@ -16,9 +20,13 @@ public class ColumnMap<K, V> {
 		readMap(filename);
 	}
 	
+	public Set<String> keySet() {
+		return columnMap.keySet();
+	}
+	
 	
 	private Map<String, String> readMap(String filename) throws IOException {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new LinkedHashMap<String, String>();
 		List<String> list = Files.readAllLines(Paths.get(filename));
 		Pattern p = Pattern.compile("((\\,|[^,])+),([^#]*)");
 		
@@ -27,12 +35,12 @@ public class ColumnMap<K, V> {
 			// "((\\,|[^,])+),([^#]*)"  we want groups 0,2 I think
 			
 			// find the strings to map and put them in the map
-			System.out.println("scanning line: " + list.get(i));
+			Logger.out.println("scanning line: " + list.get(i));
 			Matcher m = p.matcher(list.get(i));
 			m.matches();
 			
 			int groupCount = m.groupCount();
-			System.out.println("number of groups: " + groupCount);
+			Logger.out.println("number of groups: " + groupCount);
 			//group 1 & group 3 are our Key & Value
 			map.put(m.group(1),m.group(3));
 
@@ -43,8 +51,12 @@ public class ColumnMap<K, V> {
 	
 	public void printMap() {
 		for (String key : columnMap.keySet()) {
-			System.out.println("key: " + key + "\t\tvalue: " + columnMap.get(key));
+			Logger.out.println("key: " + key + "\t\tvalue: " + columnMap.get(key));
 		}
+	}
+
+	public String get(String key) {
+		return columnMap.get(key);
 	}
 	
 }
