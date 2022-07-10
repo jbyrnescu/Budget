@@ -24,6 +24,7 @@ import accounts.StarOneAccount;
 import db.Tables;
 
 import finance.Logger;
+import finance.reports.model.PieChartModel;
 
 public class Finance {
 
@@ -50,6 +51,7 @@ public class Finance {
 		// we have to instantiate a Logger because it throws an exception with file creation
 		// In other words we can't make it static
 		Logger logger = new Logger();
+		logger.toggleStdout();
 		Finance finance = new Finance();
 
 		
@@ -71,6 +73,12 @@ public class Finance {
 
 		finance.createAccountDatabase();
 		finance.writeDatabaseToCSV("output.csv");
+		
+		PieChartModel pcm = new PieChartModel(finance.connection, basePath);
+		pcm.loadPieChartEntries();
+		pcm.writePieChartEntries();
+		pcm.drawPieChart();
+		
 		finance.closeAll();
 	}
 

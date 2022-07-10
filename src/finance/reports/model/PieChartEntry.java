@@ -20,7 +20,7 @@ public class PieChartEntry {
 	}
 	public void loadFromResultSet(ResultSet rs) throws SQLException {
 		category = rs.getString("budgetCat");
-		amount = rs.getFloat("amount");
+		amount = rs.getFloat(2);
 	}
 	
 }

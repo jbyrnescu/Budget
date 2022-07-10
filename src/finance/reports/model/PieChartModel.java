@@ -1,5 +1,6 @@
 package finance.reports.model;
 
+import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -11,13 +12,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.*;
+
+import finance.Logger;
+
+import org.jfree.chart.*;
+import org.jfree.data.general.DefaultPieDataset;
+
 public class PieChartModel {
 	
 	ArrayList<PieChartEntry> chartEntries = new ArrayList<PieChartEntry>();
 	Connection connection;
 	String basePath;
 	
-	PieChartModel(Connection connection, String basePath) {
+	public PieChartModel(Connection connection, String basePath) {
 		this.connection = connection;
 		this.basePath = basePath;
 	}
@@ -30,19 +38,22 @@ public class PieChartModel {
 		file.close();
 	}
 	
-	public int getPieChartEntries() throws SQLException {
+	public int loadPieChartEntries() throws SQLException {
 		String query = "select BudgetCat,sum(amount) from BigTXView "
 				+ "where "
-				+ "XclFrmCshFlw not like 'y'"
-				+ "and budgetCat not like \"%ayment%\" "
+				+ "XclFrmCshFlw is null "
+				+ "and "
+				+ "budgetCat not like \"%ayment%\" "
 				+ "and budgetCat not like \"%Income%\" "
 				+ "group by BudgetCat "
 				+ "order by sum(amount) asc;";
 		
+		Logger.out.println("query for pie chart: " + query);
+		
 				Statement s = connection.createStatement();
 				ResultSet rs = s.executeQuery(query);
 				int numberOfEntries = 0;
-				while(!rs.isAfterLast()) {
+				while(rs.next()) {
 					PieChartEntry pce = new PieChartEntry();
 					pce.loadFromResultSet(rs);
 					chartEntries.add(pce);
@@ -50,6 +61,31 @@ public class PieChartModel {
 				}
 				return numberOfEntries;
 				
+	}
+	
+	public void drawPieChart() {
+		if (chartEntries.size() < 1) 
+			{
+				Logger.out.println("No entries to display");
+				return;
+			}
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		for (int i = 0; i < chartEntries.size(); i++) {
+			dataset.insertValue(i, chartEntries.get(i).getCategory(), 
+					Math.abs(chartEntries.get(i).getAmount()));
+		}
+		JFreeChart chart = ChartFactory.createPieChart("Spending Category Amounts", 
+				dataset, true, false, false);
+		JPanel jPanel = new ChartPanel(chart);
+		jPanel.setSize(560,367);
+//		RefineryUtilities.centerFrameOnScreen(jPanel);
+		jPanel.setVisible(true);
+		JFrame frame = new JFrame("Spending Category Amounts");
+		frame.setLocationRelativeTo(null);
+		frame.setSize(new Dimension(400,400));
+		frame.add(jPanel);
+		frame.setVisible(true);
+
 	}
 
 }
