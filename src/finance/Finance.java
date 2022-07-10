@@ -20,6 +20,7 @@ import SqliteDBUtils.ColumnMap;
 import accounts.Account;
 import accounts.BigViewAccount;
 import accounts.ChaseAccount;
+import accounts.Expenses;
 import accounts.StarOneAccount;
 import db.Tables;
 
@@ -78,6 +79,10 @@ public class Finance {
 		pcm.loadPieChartEntries();
 		pcm.writePieChartEntries();
 		pcm.drawPieChart();
+		
+		Expenses e = new Expenses();
+		e.loadTransactionsFromDatabase(finance.connection);
+		e.drawCashFlowGraph();
 		
 		finance.closeAll();
 	}

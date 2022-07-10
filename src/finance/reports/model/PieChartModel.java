@@ -39,7 +39,7 @@ public class PieChartModel {
 	}
 	
 	public int loadPieChartEntries() throws SQLException {
-		String query = "select BudgetCat,sum(amount) from BigTXView "
+		String query = "select BudgetCat,sum(amount) as amount from BigTXView "
 				+ "where "
 				+ "XclFrmCshFlw is null "
 				+ "and "
@@ -71,8 +71,8 @@ public class PieChartModel {
 			}
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (int i = 0; i < chartEntries.size(); i++) {
-			dataset.insertValue(i, chartEntries.get(i).getCategory(), 
-					Math.abs(chartEntries.get(i).getAmount()));
+			float amount = Math.abs(chartEntries.get(i).getAmount());
+			dataset.insertValue(i, chartEntries.get(i).getCategory() + " \n" + amount,amount);
 		}
 		JFreeChart chart = ChartFactory.createPieChart("Spending Category Amounts", 
 				dataset, true, false, false);
