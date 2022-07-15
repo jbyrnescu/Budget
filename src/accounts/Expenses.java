@@ -15,8 +15,14 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.DefaultXYItemRenderer;
+import org.jfree.chart.renderer.xy.SamplingXYLineRenderer;
+import org.jfree.chart.renderer.xy.VectorRenderer;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.data.xy.XYDataset;
 
 public class Expenses extends BigViewAccount {
 
@@ -43,13 +49,15 @@ public class Expenses extends BigViewAccount {
 		
 		for (int i = 0; i < getNumberTransactions(); i++) {
 			array[0][i] = getTransaction(i).getTransactionDate().getTime();
-			cumulativeAmount += Math.abs(getTransaction(i).getAmount());
+			if (getTransaction(i).getAmount() < 0)
+				cumulativeAmount += Math.abs(getTransaction(i).getAmount());
 			array[1][i] = cumulativeAmount;
 
 		}
 		
 		DefaultXYDataset dataset = new DefaultXYDataset();
 		dataset.addSeries("Cumulative Amount", array);
+//		dataset.addSeries("Cumulative Amount 2", array);
 		
 		JFreeChart chart = ChartFactory.createXYLineChart("Cumulative Cash Flow", 
 				"Transaction Date", "Cumulative Amount", dataset);
@@ -59,6 +67,16 @@ public class Expenses extends BigViewAccount {
 		XYPlot xyPlot = chart.getXYPlot();
 		xyPlot.setDomainAxis(domainAxis);
 		xyPlot.setRangeAxis(rangeAxis);
+		
+		xyPlot.setDataset(1,dataset);
+//		DefaultXYDataset xySet = (DefaultXYDataset) xyPlot.getDataset(1);
+
+		
+//		AbstractXYItemRenderer dotR = new XYBarRenderer();
+//		
+		XYDotRenderer dotR = new XYDotRenderer();
+		dotR.setDotHeight(5); dotR.setDotWidth(5);
+		xyPlot.setRenderer(1,dotR);
 		
 		JPanel jPanel = new ChartPanel(chart);
 		jPanel.setSize(560,367);
