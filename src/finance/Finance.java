@@ -234,7 +234,8 @@ public class Finance {
 		try {
 			// db parameters
 //			String url = "jdbc:sqlite:" + baseProjectPath + "TXs2.db";
-			String url = "jdbc:sqlite:/home/jbyrne/Dropbox/finance/TXs2.db";
+//			String url = "jdbc:sqlite:/home/jbyrne/Dropbox/finance/TXs2.db";
+			String url = "jdbc:sqlite:" + baseProjectPath + "/TXs2.db";
 			// create a connection to the database
 			connection = DriverManager.getConnection(url);
 
