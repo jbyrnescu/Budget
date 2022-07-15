@@ -36,8 +36,6 @@ public class Finance {
 	ColumnMap<String, String> categoriesMap ;
 
 	Finance() {
-		// we're going to assume you want to connect
-		connect();
 	}
 
 	private Connection connection;
@@ -53,11 +51,13 @@ public class Finance {
 		// In other words we can't make it static
 		Logger logger = new Logger();
 		logger.toggleStdout();
-		Finance finance = new Finance();
+
 
 		
 		String downloadPath= System.getenv("DOWNLOADS_PATH");
 		String basePath = System.getenv("FINANCE_BASE_PATH");
+		Finance finance = new Finance();
+		
 		if (downloadPath == null)
 			finance.setDownloadDirectory("/Users/jbyrne/Downloads/");
 		else
@@ -67,7 +67,9 @@ public class Finance {
 		else
 			finance.setBasePath(basePath);
 			
+		finance.connect();
 
+		
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
 		Driver driver = drivers.nextElement();
 		Logger.out.println("driver.toString()... " + driver.toString());
@@ -234,7 +236,6 @@ public class Finance {
 		try {
 			// db parameters
 //			String url = "jdbc:sqlite:" + baseProjectPath + "TXs2.db";
-//			String url = "jdbc:sqlite:/home/jbyrne/Dropbox/finance/TXs2.db";
 			String url = "jdbc:sqlite:" + baseProjectPath + "/TXs2.db";
 			// create a connection to the database
 			connection = DriverManager.getConnection(url);
