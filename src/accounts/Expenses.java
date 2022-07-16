@@ -25,10 +25,12 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
 public class Expenses extends BigViewAccount {
+	
+	Connection c = null;
 
 	@Override
 	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
-		
+		this.c = c;
 		String query = "select * from BigTXView where XclFrmCshFlw is null "
 				+ "and amount < 0;"
 				+ "and BudgetCat not like %ncome%";
@@ -40,7 +42,11 @@ public class Expenses extends BigViewAccount {
 		}
 	}
 	
-	public void drawCashFlowGraph() {
+	public void drawCashFlowGraph() throws SQLException {
+
+		Incomes incomes = new Incomes();
+		incomes.loadTransactionsFromDatabase(c);
+		XYDataset incomeDataset = incomes.getXYDataset();
 		// put numbers in double[][] array
 		int numTransactions = getNumberTransactions();
 		double[][] array = new double[2][numTransactions];
@@ -69,6 +75,8 @@ public class Expenses extends BigViewAccount {
 		xyPlot.setRangeAxis(rangeAxis);
 		
 		xyPlot.setDataset(1,dataset);
+		xyPlot.setDataset(2,incomeDataset);
+		xyPlot.setDataset(3,incomeDataset);
 //		DefaultXYDataset xySet = (DefaultXYDataset) xyPlot.getDataset(1);
 
 		
@@ -77,6 +85,7 @@ public class Expenses extends BigViewAccount {
 		XYDotRenderer dotR = new XYDotRenderer();
 		dotR.setDotHeight(5); dotR.setDotWidth(5);
 		xyPlot.setRenderer(1,dotR);
+		xyPlot.setRenderer(3,dotR);
 		
 		JPanel jPanel = new ChartPanel(chart);
 		jPanel.setSize(560,367);
