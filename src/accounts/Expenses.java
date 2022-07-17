@@ -21,8 +21,11 @@ import org.jfree.chart.renderer.xy.SamplingXYLineRenderer;
 import org.jfree.chart.renderer.xy.VectorRenderer;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
+import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
+
+import finance.Logger;
 
 public class Expenses extends BigViewAccount {
 	
@@ -47,19 +50,38 @@ public class Expenses extends BigViewAccount {
 		Incomes incomes = new Incomes();
 		incomes.loadTransactionsFromDatabase(c);
 		XYDataset incomeDataset = incomes.getXYDataset();
+		
+		MandatoryTransactions mt = new MandatoryTransactions();
+		mt.loadTransactionsFromDatabase(c);
+		XYDataset mtDataset = mt.getXYDataset();
+		
 		// put numbers in double[][] array
 		int numTransactions = getNumberTransactions();
 		double[][] array = new double[2][numTransactions];
 		
 		float cumulativeAmount = 0.0f;
+		double sumXY = 0.0, sumXSquared = 0.0, sumY = 0.0, sumX = 0.0;
 		
 		for (int i = 0; i < getNumberTransactions(); i++) {
-			array[0][i] = getTransaction(i).getTransactionDate().getTime();
-			if (getTransaction(i).getAmount() < 0)
-				cumulativeAmount += Math.abs(getTransaction(i).getAmount());
-			array[1][i] = cumulativeAmount;
+			
 
+			double x = getTransaction(i).getTransactionDate().getTime();
+			double y = Math.abs(getTransaction(i).getAmount());
+			
+			array[0][i] = x;
+			if (getTransaction(i).getAmount() < 0)
+				cumulativeAmount += y;
+			array[1][i] = cumulativeAmount;
+			
+			// for the trendline... we need the following
+			sumXY += x*y;
+			sumXSquared += x*x;
+			sumY += y;
+			sumX += x;
 		}
+
+		double m = calculateSlope(sumX, sumY, sumXY, sumXSquared, numTransactions);
+		double b = calculateYIntercept(sumY,m,sumX,numTransactions);
 		
 		DefaultXYDataset dataset = new DefaultXYDataset();
 		dataset.addSeries("Cumulative Amount", array);
@@ -77,6 +99,8 @@ public class Expenses extends BigViewAccount {
 		xyPlot.setDataset(1,dataset);
 		xyPlot.setDataset(2,incomeDataset);
 		xyPlot.setDataset(3,incomeDataset);
+		xyPlot.setDataset(4,mtDataset);
+		xyPlot.setDataset(5,mtDataset);
 //		DefaultXYDataset xySet = (DefaultXYDataset) xyPlot.getDataset(1);
 
 		
@@ -86,6 +110,21 @@ public class Expenses extends BigViewAccount {
 		dotR.setDotHeight(5); dotR.setDotWidth(5);
 		xyPlot.setRenderer(1,dotR);
 		xyPlot.setRenderer(3,dotR);
+		xyPlot.setRenderer(5,dotR);
+		
+		double xMin = array[0][0];
+		double xMax = array[0][numTransactions-1];
+		
+		double x1 = array[0][0];
+		double x2 = array[0][numTransactions-1];
+		double yMin = m*array[0][0]+b;
+		double yMax = m*x2+b; 
+//		double yMax = 
+		
+		double[][] trendline1Array = { {xMin,xMax}, {yMin,cumulativeAmount} };
+		DefaultXYDataset trendline1Dataset = new DefaultXYDataset();
+		trendline1Dataset.addSeries("Trendline CUmulative Amount",trendline1Array);
+		xyPlot.setDataset(6,trendline1Dataset);
 		
 		JPanel jPanel = new ChartPanel(chart);
 		jPanel.setSize(560,367);
@@ -97,6 +136,26 @@ public class Expenses extends BigViewAccount {
 		frame.add(jPanel);
 		frame.setVisible(true);
 		
+		Logger.out.println("graph complete");
+		
+	}
+
+	private double calculateYIntercept(double sumY, double m, double sumX, int n) {
+		double b;
+		double numerator = sumY-m*sumX;
+		return(numerator/n);
+	}
+
+	private double calculateSlope(double sumX, 
+			double sumY, 
+			double sumXY, 
+			double sumXSquared, 
+			int n) {
+		double m;
+		double numerator = n*sumXY-sumX*sumY;
+		double denominator = n*sumXSquared-(sumX*sumX);
+		m = numerator/denominator;
+		return(m);
 	}
 
 }
