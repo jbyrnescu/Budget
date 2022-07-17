@@ -62,11 +62,21 @@ public class Expenses extends BigViewAccount {
 		float cumulativeAmount = 0.0f;
 		double sumXY = 0.0, sumXSquared = 0.0, sumY = 0.0, sumX = 0.0;
 		
+		double[][] testArray = { {1,2,3,4,5,6,7},
+				{1.5, 3.8, 6.7, 9.0, 11.2, 13.6, 16} };
+		
 		for (int i = 0; i < getNumberTransactions(); i++) {
-			
 
+			
+			// for testing purposes
+			//		for (int i = 0; i < 7; i++) {
+//			double x = testArray[0][i];
+//			double y = testArray[1][i];
+//
 			double x = getTransaction(i).getTransactionDate().getTime();
 			double y = Math.abs(getTransaction(i).getAmount());
+
+			
 			
 			array[0][i] = x;
 			if (getTransaction(i).getAmount() < 0)
@@ -79,10 +89,12 @@ public class Expenses extends BigViewAccount {
 			sumY += y;
 			sumX += x;
 		}
-
-		double m = calculateSlope(sumX, sumY, sumXY, sumXSquared, numTransactions);
-		double b = calculateYIntercept(sumY,m,sumX,numTransactions);
 		
+
+//double m = calculateSlope(sumX, sumY, sumXY, sumXSquared, 7);
+
+		double m = calculateSlope(sumX, sumY, sumXY, sumXSquared, numTransactions, array);
+		double b = calculateYIntercept(m,numTransactions, array);
 		DefaultXYDataset dataset = new DefaultXYDataset();
 		dataset.addSeries("Cumulative Amount", array);
 //		dataset.addSeries("Cumulative Amount 2", array);
@@ -117,13 +129,13 @@ public class Expenses extends BigViewAccount {
 		
 		double x1 = array[0][0];
 		double x2 = array[0][numTransactions-1];
-		double yMin = m*array[0][0]+b;
-		double yMax = m*x2+b; 
+		double yMin = m*x1+b;
+		double yMax = m*x2+b;
 //		double yMax = 
 		
-		double[][] trendline1Array = { {xMin,xMax}, {yMin,cumulativeAmount} };
+		double[][] trendline1Array = { {xMin,xMax}, {yMin,yMax} };
 		DefaultXYDataset trendline1Dataset = new DefaultXYDataset();
-		trendline1Dataset.addSeries("Trendline CUmulative Amount",trendline1Array);
+		trendline1Dataset.addSeries("Trendline Cum Amnt m=" + m*1000*60*60*24,trendline1Array);
 		xyPlot.setDataset(6,trendline1Dataset);
 		
 		JPanel jPanel = new ChartPanel(chart);
@@ -140,21 +152,55 @@ public class Expenses extends BigViewAccount {
 		
 	}
 
-	private double calculateYIntercept(double sumY, double m, double sumX, int n) {
-		double b;
-		double numerator = sumY-m*sumX;
-		return(numerator/n);
+	private double calculateYIntercept( 
+			double m, 
+			int n, 
+			double[][] array) {
+		double sumX = 0.0;
+		double sumY = 0.0;
+
+		for (int i = 0; i < n; i++) {
+			sumY += array[1][i];
+			sumX += array[0][i];
+		}
+		
+		double yBar = sumY/n;
+		double xBar = sumX/n;
+				
+		double b = yBar-m*xBar;
+		return(b);
+	}
+	
+	private double calculateYInterceptWithFirstPoint(double x, double y, double m) {
+		double b = y - m*x;
+		return(b);
 	}
 
 	private double calculateSlope(double sumX, 
 			double sumY, 
 			double sumXY, 
 			double sumXSquared, 
-			int n) {
+			int n, double[][] array) {
 		double m;
-		double numerator = n*sumXY-sumX*sumY;
-		double denominator = n*sumXSquared-(sumX*sumX);
-		m = numerator/denominator;
+		// This doesn't work either
+//		double numerator = n*sumXY - sumX*sumY*n*sumXSquared - sumX*sumX;
+		// From youtube.  I don't think it works!
+//		double numerator = n*sumXY-sumX*sumY;
+//		double denominator = n*sumXSquared-(sumX*sumX);
+		
+//		m = numerator/denominator;
+		
+		double xDiff = 0.0, sumXDiff = 0.0, yDiff = 0.0, sumDiff = 0.0;
+		double sumXDiffSquared = 0.0;
+		for (int i = 0; i < n; i++) {
+			xDiff = array[0][i] - sumX/n;
+			yDiff = array[1][i] - sumY/n;
+			sumDiff += xDiff*yDiff; 
+			sumXDiffSquared += xDiff*xDiff;
+		}
+		
+		m = sumDiff/sumXDiffSquared;
+		
 		return(m);
 	}
 
