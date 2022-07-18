@@ -8,6 +8,9 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
 public class Incomes extends BigViewAccount {
+	
+	private static double[][] array;
+	
 	@Override
 	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
 		
@@ -23,10 +26,20 @@ public class Incomes extends BigViewAccount {
 	}
 
 	public XYDataset getXYDataset() {
-		int numTransactions = getNumberTransactions();
-		double[][] array = new double[2][numTransactions];
+
+		getArrayOfPoints();
 		
-		float cumulativeAmount = 0.0f;
+		DefaultXYDataset dataset = new DefaultXYDataset();
+		dataset.addSeries("Cumulative Income Amount", array);
+		return(dataset);
+//
+	}
+	
+	public double[][] getArrayOfPoints() {
+		int numTransactions = getNumberTransactions();
+		
+		double cumulativeAmount = 0.0;
+		array = new double[2][numTransactions];
 		
 		for (int i = 0; i < getNumberTransactions(); i++) {
 			array[0][i] = getTransaction(i).getTransactionDate().getTime();
@@ -34,10 +47,6 @@ public class Incomes extends BigViewAccount {
 			array[1][i] = cumulativeAmount;
 
 		}
-		
-		DefaultXYDataset dataset = new DefaultXYDataset();
-		dataset.addSeries("Cumulative Income Amount", array);
-		return(dataset);
-//
+		return array;
 	}
 }
