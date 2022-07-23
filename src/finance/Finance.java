@@ -12,8 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.GregorianCalendar;
 
 import SqliteDBUtils.Column;
 import SqliteDBUtils.ColumnMap;
@@ -53,17 +57,21 @@ public class Finance {
 		logger.toggleStdout();
 
 
+
 		
-		String downloadPath= System.getenv("DOWNLOADS_PATH");
+		String downloadPath= System.getenv("FINANCE_DOWNLOADS_PATH");
 		String basePath = System.getenv("FINANCE_BASE_PATH");
 		Finance finance = new Finance();
 		
 		if (downloadPath == null)
-			finance.setDownloadDirectory("/Users/jbyrne/Downloads/");
+			finance.setDownloadDirectory(args[1]);
+//			finance.setDownloadDirectory("/Users/jbyrne/Downloads/");
 		else
 			finance.setDownloadDirectory(downloadPath);
+			
 		if (basePath == null) 
-			finance.setBasePath("/Users/jbyrne/Dropbox/finance/");
+			finance.setBasePath(args[0]);
+//			finance.setBasePath("/Users/jbyrne/Dropbox/finance/");
 		else
 			finance.setBasePath(basePath);
 			
@@ -77,14 +85,33 @@ public class Finance {
 		finance.createAccountDatabase();
 		finance.writeDatabaseToCSV("output.csv");
 		
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Calendar calendar1 = GregorianCalendar.getInstance();
+		Date date1 = calendar1.getTime();
+		String dateStr2 = simpleDateFormat.format(date1);
+
+		calendar1.add(Calendar.DATE, -40);
+		Date date2 = calendar1.getTime();
+		String dateStr1 = simpleDateFormat.format(date2);
+		
 		PieChartModel pcm = new PieChartModel(finance.connection, basePath);
-		pcm.loadPieChartEntries();
+		pcm.loadPieChartEntriesFromDatabase(dateStr1, dateStr2);
 		pcm.writePieChartEntries();
 		pcm.drawPieChart();
 		
-		Expenses e = new Expenses();
-		e.loadTransactionsFromDatabase(finance.connection);
+		PieChartModel pcm2 = new PieChartModel(finance.connection, basePath);
+		pcm2.loadPieChartEntriesFromDatabase(null,  null);
+		pcm2.drawPieChart();
+		
+		Expenses e = new Expenses(finance.connection);
+		e.loadTransactionsFromDatabase(finance.connection, dateStr1, dateStr2);
 		e.drawCashFlowGraph();
+		
+		Expenses e2 = new Expenses(finance.connection);
+		e2.loadTransactionsFromDatabase(null, null, null);
+		e2.drawCashFlowGraph();
 		
 		finance.closeAll();
 	}
@@ -95,7 +122,7 @@ public class Finance {
 		// the other option is to load memory/Transactions and print them... 
 		// but, we're not going to do that
 		BigViewAccount bva = new BigViewAccount();
-		bva.loadTransactionsFromDatabase(connection);
+		bva.loadTransactionsFromDatabase(connection, null, null);
 		Logger.out.println("writing transactions to: " + baseProjectPath + filename);
 		bva.writeTransactionsToCSV(baseProjectPath+filename);
 	}
@@ -116,13 +143,15 @@ public class Finance {
 		// read in Star One Checking Account file
 		StarOneAccount soa = new StarOneAccount();
 		accounts.add(soa);
-		soa.loadLatestFile(downloadsDirectory);
+		downloadsDirectory = "/"+downloadsDirectory+"/";
+		Logger.out.println("loading transactions files from directory: " + downloadsDirectory);
+		soa.loadDirectory(downloadsDirectory);
 //		soa.loadTransactionsFromFile(downloadsDirectory+"statement_starone_2_06_10_2022_to_06_26_2022.csv");
 		soa.printTransactions();
 
 		ChaseAccount chaseAccount = new ChaseAccount();
 		accounts.add(chaseAccount);
-		chaseAccount.loadLatestFile(downloadsDirectory);
+		chaseAccount.loadDirectory(downloadsDirectory);
 //		chaseAccount.loadTransactionsFromFile(downloadsDirectory+"Chase3929_Activity20220610_20220627_20220627.CSV");
 		chaseAccount.printTransactions();
 
@@ -175,7 +204,7 @@ public class Finance {
 
 	private void readExcludeFromCashFlowMap(String file) throws IOException {
 
-		excludedTransactionsMap = new ColumnMap<String, String>(baseProjectPath + file);
+		excludedTransactionsMap = new ColumnMap<String, String>(baseProjectPath + "/" + file);
 
 //			mandatoryMap.printMap();
 	}
@@ -211,7 +240,7 @@ public class Finance {
 	private void readMandatoryMap(String file) throws IOException {
 
 //		Column column = new Column(this.getConnection(),999); 
-		mandatoryMap = new ColumnMap<String, String>(baseProjectPath + "MarkMandatory/" + file);
+		mandatoryMap = new ColumnMap<String, String>(baseProjectPath + "/MarkMandatory/" + file);
 
 //		mandatoryMap.printMap();
 	}
@@ -219,7 +248,7 @@ public class Finance {
 	private void readCategoriesMap(String file) throws IOException {
 
 //		Column column = new Column(this.getConnection(),4); 
-		categoriesMap = new ColumnMap<String, String>(baseProjectPath + "Categorize/" + file);
+		categoriesMap = new ColumnMap<String, String>(baseProjectPath + "/Categorize/" + file);
 
 //		categoriesMap.printMap();
 	}

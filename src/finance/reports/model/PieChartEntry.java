@@ -5,14 +5,16 @@ import java.sql.SQLException;
 
 public class PieChartEntry {
 	private String category;
-	private float amount;
+	private double amount;
+	private double percentage;
+	
 	public String getCategory() {
 		return category;
 	}
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public float getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	public void setAmount(float amount) {

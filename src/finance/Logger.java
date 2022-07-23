@@ -12,7 +12,7 @@ public class Logger {
 	PrintStream notUsedOut;
 	
 	public Logger() throws IOException {
-		System.out.println("Current working directory: " + System.getProperty("user.dir"));
+		System.out.println("Logger current working directory: " + System.getProperty("user.dir"));
 		out = notUsedOut = new PrintStream(new File("log.txt"));
 //		new FileWriter("log.txt")
 	}

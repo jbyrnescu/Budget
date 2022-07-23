@@ -46,7 +46,7 @@ public class ChaseAccount extends Account {
 	}
 
 	@Override
-	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
+	public void loadTransactionsFromDatabase(Connection c, String beginDate, String endDate) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}

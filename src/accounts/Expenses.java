@@ -29,12 +29,32 @@ import finance.Logger;
 
 public class Expenses extends BigViewAccount {
 	
-	Connection c = null;
+	String beginDate, endDate;
+	
+	public Expenses(Connection connection) {
+		this.connection = connection;
+	}
 
 	@Override
-	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
-		this.c = c;
+	public void loadTransactionsFromDatabase(Connection c, String beginDate, String endDate) throws SQLException {
+		this.beginDate = beginDate;
+		this.endDate = endDate;
+		String and1 ="", and2 = "";
+		String endQuote = "\"";
+		if (beginDate == null) {
+			beginDate = "";
+		} else and1 = " and transactionDate >= \"" +beginDate+ endQuote;
+		if (endDate == null)
+		{ 
+			endDate = ""; 
+		} else and2 = " and transactionDate <= \"" + endDate + endQuote;
+		
+		if (c == null)
+			c = connection;
+		
 		String query = "select * from BigTXView where XclFrmCshFlw is null "
+				+ and1
+				+ and2
 				+ "and amount < 0;"
 				+ "and BudgetCat not like %ncome%";
 		ResultSet rs = c.createStatement().executeQuery(query);
@@ -48,11 +68,11 @@ public class Expenses extends BigViewAccount {
 	public void drawCashFlowGraph() throws SQLException {
 
 		Incomes incomes = new Incomes();
-		incomes.loadTransactionsFromDatabase(c);
+		incomes.loadTransactionsFromDatabase(connection, beginDate, endDate);
 		XYDataset incomeDataset = incomes.getXYDataset();
 		
 		MandatoryTransactions mt = new MandatoryTransactions();
-		mt.loadTransactionsFromDatabase(c);
+		mt.loadTransactionsFromDatabase(connection, beginDate, endDate);
 		XYDataset mtDataset = mt.getXYDataset();
 		
 		// put numbers in double[][] array

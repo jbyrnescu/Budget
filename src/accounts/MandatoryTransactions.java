@@ -9,9 +9,21 @@ import org.jfree.data.xy.XYDataset;
 
 public class MandatoryTransactions extends BigViewAccount {
 	@Override
-	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
+	public void loadTransactionsFromDatabase(Connection c, String beginDate, String endDate) throws SQLException {
+		
+		String and1 ="", and2 = "";
+		String endQuote = "\"";
+		if (beginDate == null) {
+			beginDate = "";
+		} else and1 = " and transactionDate >= \"" +beginDate+ endQuote;
+		if (endDate == null)
+		{ 
+			endDate = ""; 
+		} else and2 = " and transactionDate <= \"" + endDate + endQuote;
 		
 		String query = "select * from BigTXView where Mandatory = \"M\" "
+				+ and1
+				+ and2
 				+ "and amount < 0;";
 
 		ResultSet rs = c.createStatement().executeQuery(query);

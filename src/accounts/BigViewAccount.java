@@ -11,9 +11,9 @@ import java.sql.Statement;
 import java.text.ParseException;
 
 public class BigViewAccount extends Account {
-
+	
 	@Override
-	public void loadDatabaseWithTransactions(Connection connection) throws SQLException {
+	public void loadDatabaseWithTransactions(Connection c) throws SQLException {
 		// TODO Auto-generated method stub
 
 	}
@@ -25,7 +25,7 @@ public class BigViewAccount extends Account {
 	}
 
 	@Override
-	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
+	public void loadTransactionsFromDatabase(Connection c, String beginDate, String endDate) throws SQLException {
 		String queryString = "select * from BigTXView;";
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery(queryString);

@@ -38,15 +38,27 @@ public class PieChartModel {
 		file.close();
 	}
 	
-	public int loadPieChartEntries() throws SQLException {
+	public int loadPieChartEntriesFromDatabase(String beginDate, String endDate) throws SQLException {
+		String and1 ="", and2 = "";
+		String endQuote = "\"";
+		if (beginDate == null) {
+			beginDate = "";
+		} else and1 = " and transactionDate >= \"" +beginDate+ endQuote;
+		if (endDate == null)
+		{ 
+			endDate = ""; 
+		} else and2 = " and transactionDate <= \"" + endDate + endQuote;
+		
 		String query = "select BudgetCat,sum(amount) as amount from BigTXView "
-				+ "where "
-				+ "XclFrmCshFlw is null "
-				+ "and "
-				+ "budgetCat not like \"%ayment%\" "
-				+ "and budgetCat not like \"%Income%\" "
-				+ "group by BudgetCat "
-				+ "order by sum(amount) asc;";
+				+ " where "
+				+ " XclFrmCshFlw is null "
+				+ " and "
+				+ " budgetCat not like \"%ayment%\" "
+				+ " and budgetCat not like \"%Income%\" "
+				+ and1
+				+ and2
+				+ " group by BudgetCat "
+				+ " order by sum(amount) asc;";
 		
 		Logger.out.println("query for pie chart: " + query);
 		
@@ -71,7 +83,7 @@ public class PieChartModel {
 			}
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (int i = 0; i < chartEntries.size(); i++) {
-			float amount = Math.abs(chartEntries.get(i).getAmount());
+			double amount = Math.abs(chartEntries.get(i).getAmount());
 			dataset.insertValue(i, chartEntries.get(i).getCategory() + " \n" + amount,amount);
 		}
 		JFreeChart chart = ChartFactory.createPieChart("Spending Category Amounts", 

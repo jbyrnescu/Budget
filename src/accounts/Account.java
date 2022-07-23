@@ -48,6 +48,23 @@ public abstract class Account {
 			t.print();
 		}
 	}
+	
+	public void loadDirectory(String downloadPath) throws IOException, ParseException {
+		File directory = new File(downloadPath);
+
+		FilenameFilter filter = (d, s) -> {
+			return s.matches(filenamePrefix);
+		};
+
+		File[] listOfFiles = directory.listFiles(filter);
+		
+		Arrays.parallelSort(listOfFiles, Comparator.comparingLong(File::lastModified));
+		
+		for (int i = 0; i < listOfFiles.length; i++) {
+			loadTransactionsFromFile(downloadPath+listOfFiles[i].getName());
+		}
+		
+	}
 
 
 
@@ -71,6 +88,6 @@ public abstract class Account {
 
 	public abstract void loadDatabaseWithTransactions(Connection connection) throws SQLException;
 	public abstract void loadTransactionsFromFile(String filename) throws IOException, ParseException;
-	public abstract void loadTransactionsFromDatabase(Connection c) throws SQLException;
+	public abstract void loadTransactionsFromDatabase(Connection c, String date1, String date2) throws SQLException;
 
 }

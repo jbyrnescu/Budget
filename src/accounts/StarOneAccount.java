@@ -60,7 +60,7 @@ public class StarOneAccount extends Account {
 
 
 	@Override
-	public void loadTransactionsFromDatabase(Connection c) throws SQLException {
+	public void loadTransactionsFromDatabase(Connection c, String date1, String date2) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
