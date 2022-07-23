@@ -29,6 +29,7 @@ import accounts.StarOneAccount;
 import db.Tables;
 
 import finance.Logger;
+import finance.reports.model.BudgetModel;
 import finance.reports.model.PieChartModel;
 
 public class Finance {
@@ -112,6 +113,10 @@ public class Finance {
 		Expenses e2 = new Expenses(finance.connection);
 		e2.loadTransactionsFromDatabase(null, null, null);
 		e2.drawCashFlowGraph();
+		
+		BudgetModel b = new BudgetModel(finance.connection, basePath);
+		b.loadBudgetFromFile("DollarsPerDayExpenditures.csv");
+		b.drawBudgetStatus();
 		
 		finance.closeAll();
 	}
