@@ -117,6 +117,7 @@ public class Finance {
 		BudgetModel b = new BudgetModel(finance.connection, basePath);
 		b.loadBudgetFromFile("DollarsPerDayExpenditures.csv");
 		b.drawBudgetStatus();
+		b.writeEntries("Budget.csv");
 		
 		finance.closeAll();
 	}
