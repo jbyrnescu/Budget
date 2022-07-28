@@ -134,7 +134,8 @@ public class StarOneTransaction extends Transaction {
 		this.amount = creditAmount - debitAmount;
 	}
 	@Override
-	public void loadIntoDatabase(Connection connection) throws SQLException {
+	public int loadIntoDatabase(Connection connection) throws SQLException {
+		if (super.loadIntoDatabase(connection) == TRANSACTION_EXISTS) return NOTHING_LOADED;
 		PreparedStatement statement = connection.prepareStatement("insert into CheckingStarOneTXs ("
 				+ "transactionNumber, memo, debitAmount, creditAmount, balance, checkNumber, "
 				+ "fees, transactionDate, description, amount, budgetCat, XclFrmCshFlw, mandatory,"
@@ -151,14 +152,14 @@ public class StarOneTransaction extends Transaction {
 		statement.setString(8, simpleDateFormat.format(transactionDate));
 //		statement.setDate(8, new java.sql.Date(transactionDate.getTime()));
 		statement.setString(9, description);
-		statement.setFloat(10, amount);
+		statement.setDouble(10, amount);
 		statement.setString(11, budgetCat);
 		statement.setString(12, xcludeFromCashFlow);
 		statement.setString(13, mandatory);
 		statement.setString(14, source);
 				
 		int numUpdates = statement.executeUpdate();
-		
+		return(TRANSACTION_LOADED);
 	}
 
 	@Override

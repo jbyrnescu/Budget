@@ -61,7 +61,9 @@ public class ChaseTransaction extends Transaction {
 	}
 
 	@Override
-	public void loadIntoDatabase(Connection connection) throws SQLException {
+	public int loadIntoDatabase(Connection connection) throws SQLException {
+		int returnCode = super.loadIntoDatabase(connection);
+		if (returnCode == TRANSACTION_EXISTS) return NOTHING_LOADED;
 		PreparedStatement statement = connection.prepareStatement("insert into VisaChaseTXs ("
 				+ "TransactionDate, PostDate, Description, Category, TransactionType, Amount, "
 				+ "Memo, "
@@ -78,7 +80,7 @@ public class ChaseTransaction extends Transaction {
 		statement.setString(3, this.description);
 		statement.setString(4, Category);
 		statement.setString(5, transactionType);
-		statement.setFloat(6, getAmount());
+		statement.setDouble(6, getAmount());
 		statement.setString(7, getMemo());
 		statement.setString(8, getBudgetCat());
 		statement.setString(9, getXcludeFromCashFlow());
@@ -86,6 +88,7 @@ public class ChaseTransaction extends Transaction {
 		statement.setString(11, "VisaChaseTXs");
 		
 		statement.executeUpdate();
+		return(TRANSACTION_LOADED);
 	}
 
 	public void populateTransactionFromString(String line) throws ParseException {

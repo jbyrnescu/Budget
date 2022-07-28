@@ -20,7 +20,8 @@ public class Expense extends Transaction {
 	}
 
 	@Override
-	public void loadIntoDatabase(Connection connection) {
+	public int loadIntoDatabase(Connection connection) {
+		return NOTHING_LOADED;
 		// TODO Auto-generated method stub
 		
 	}

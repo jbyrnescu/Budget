@@ -98,8 +98,35 @@ public class BudgetModel extends PieChartModel {
 		try {
 		List<String> lines = Files.readAllLines(Paths.get(basePath+"/"+filename));
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		startDate = simpleDateFormat.parse(lines.get(0));
+
+		
+		String startDateStr[] = lines.get(0).split(",");
+		String dateArray[] = startDateStr[0].split("-");
+		Calendar calendar = GregorianCalendar.getInstance();
+		// This looks like designed obsolescense, but the only way I could
+		// get this to work is to hard-code 2022.  Go figure.  The other
+		// line below did not work.  I don't know!
+		int year;
+//		int year = Integer.parseInt("2022");
+//		int year = Integer.parseInt(dateArray[0].trim());
+		char a;
+		if ((a = dateArray[0].charAt(0)) != 0) {
+			String yearStr = dateArray[0].substring(1);
+			year = Integer.parseInt(yearStr);
+		} else
+			year = Integer.parseInt(dateArray[0].trim());
+		
+		char b = dateArray[0].charAt(1);
+		char c = dateArray[0].charAt(2);
+		char d = dateArray[0].charAt(3);
+		char e = dateArray[0].charAt(4);
+		
+		int month = Integer.parseInt(dateArray[1]);
+		int day = Integer.parseInt(dateArray[2]);
+		calendar.set(year, month-1, day, 0,0,0);
+		startDate = calendar.getTime();
+//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		startDate = simpleDateFormat.parse(startDateStr[0].trim());
 		// delete the first line
 		lines.remove(0);
 

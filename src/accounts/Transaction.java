@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,16 +17,39 @@ public abstract class Transaction {
 	// This class holds the generalized, most abstract aspects of an account
 		// further implementation details are delegated to implementation classes
 		// such as StarOne
+	
+	public static int TRANSACTION_EXISTS = 1;
+	public static int NO_SIMILAR_TRANSACTIONS = 3;
+	public static int TRANSACTION_LOADED = 2;
+	public static int NOTHING_LOADED = 4;
+	
 		Date transactionDate;
 		String description;
-		float amount;
+		double amount;
 		String budgetCat;
 		String xcludeFromCashFlow;
 		String mandatory;
 		String source;
 		
 		public abstract void convertToAbstractTransaction();
-		public abstract void loadIntoDatabase(Connection connection) throws SQLException;
+		public int loadIntoDatabase(Connection connection) throws SQLException {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+			String transactionDateString = simpleDateFormat.format(transactionDate);
+			
+			Logger.out.println("Checking for existing transaction");
+			String queryString = "select * from BigTXView where "
+					+ " transactionDate = \"" + transactionDateString + "\""
+					+ " and description = \"" + description + "\""
+					+ " and amount = " + amount;
+			
+			
+			
+			Statement s = connection.createStatement();
+			ResultSet rs = s.executeQuery(queryString);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			if (rs.next()) return TRANSACTION_EXISTS;
+			return NO_SIMILAR_TRANSACTIONS;
+		}
 		public abstract void populateTransactionFromString(String line) throws ParseException;
 
 		public Transaction loadTransactionFromDatabase(ResultSet rs) throws SQLException {
@@ -66,7 +91,7 @@ public abstract class Transaction {
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		public float getAmount() {
+		public double getAmount() {
 			return amount;
 		}
 		public void setAmount(float amount) {

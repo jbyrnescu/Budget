@@ -20,9 +20,8 @@ public class NonExpense extends Transaction {
 	}
 
 	@Override
-	public void loadIntoDatabase(Connection connection) {
-		// TODO Auto-generated method stub
-		
+	public int loadIntoDatabase(Connection connection) {
+		return NOTHING_LOADED;		
 	}
 
 	@Override

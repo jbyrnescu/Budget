@@ -13,8 +13,9 @@ public class BigViewTransaction extends Transaction {
 	}
 
 	@Override
-	public void loadIntoDatabase(Connection connection) throws SQLException {
+	public int loadIntoDatabase(Connection connection) throws SQLException {
 	//  We won't need to do this right now
+		return(NOTHING_LOADED);
 	}
 
 	@Override
