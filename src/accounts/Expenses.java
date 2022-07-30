@@ -15,13 +15,7 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
-import org.jfree.chart.renderer.xy.DefaultXYItemRenderer;
-import org.jfree.chart.renderer.xy.SamplingXYLineRenderer;
-import org.jfree.chart.renderer.xy.VectorRenderer;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
-import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 

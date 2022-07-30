@@ -57,6 +57,11 @@ public abstract class Account {
 		};
 
 		File[] listOfFiles = directory.listFiles(filter);
+		if (listOfFiles == null) {
+			System.out.println("No files to load in directory " + downloadPath + 
+					" with filename prefix: " + filenamePrefix);
+			return;
+		}
 		
 		Arrays.parallelSort(listOfFiles, Comparator.comparingLong(File::lastModified));
 		
