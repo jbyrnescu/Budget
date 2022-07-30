@@ -57,24 +57,36 @@ public class Finance {
 		Logger logger = new Logger();
 		logger.toggleStdout();
 
-
+		Logger.out.println("Arguments passed: ");
+		for (int i = 0; i < args.length; i++) {
+			Logger.out.println(i + ":" + args[i]);
+		}
 
 		
 		String downloadPath= System.getenv("FINANCE_DOWNLOADS_PATH");
 		String basePath = System.getenv("FINANCE_BASE_PATH");
 		Finance finance = new Finance();
 		
-		if (downloadPath == null)
+		if (downloadPath == null) {
 			finance.setDownloadDirectory(args[1]);
+			downloadPath = args[1];
 //			finance.setDownloadDirectory("/Users/jbyrne/Downloads/");
+		}
 		else
+		{
 			finance.setDownloadDirectory(downloadPath);
+		}
 			
-		if (basePath == null) 
+		if (basePath == null) { 
 			finance.setBasePath(args[0]);
+			basePath = args[0];
+		}
+		
 //			finance.setBasePath("/Users/jbyrne/Dropbox/finance/");
 		else
 			finance.setBasePath(basePath);
+		
+
 			
 		finance.connect();
 

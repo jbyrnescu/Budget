@@ -39,6 +39,7 @@ public class BudgetModel extends PieChartModel {
 
 	public BudgetModel(Connection connection, String basePath) {
 		super(connection, basePath);
+		this.basePath = basePath;
 	}
 	
 	public long getDaysSinceStart() {
@@ -91,8 +92,6 @@ public class BudgetModel extends PieChartModel {
 	
 	// reads from a CSV the wanted budget, not actual
 	public void loadBudgetFromFile(String filename) throws ParseException {
-		BudgetModel budgetModel = this;
-		
 //		File file = Paths.get();
 		
 		try {
