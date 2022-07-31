@@ -108,9 +108,12 @@ public class BudgetModel extends PieChartModel {
 		int year;
 //		int year = Integer.parseInt("2022");
 //		int year = Integer.parseInt(dateArray[0].trim());
+		String yearStr;
+		// UTF-8 has a character 16 bit character code which istn' interpretted properly here
+		// So, I try to fix that.
 		char a;
-		if ((a = dateArray[0].charAt(0)) != 0) {
-			String yearStr = dateArray[0].substring(1);
+		if ((a = dateArray[0].charAt(0)) != '2') {
+			yearStr = dateArray[0].substring(1);
 			year = Integer.parseInt(yearStr);
 		} else
 			year = Integer.parseInt(dateArray[0].trim());
@@ -118,14 +121,14 @@ public class BudgetModel extends PieChartModel {
 		char b = dateArray[0].charAt(1);
 		char c = dateArray[0].charAt(2);
 		char d = dateArray[0].charAt(3);
-		char e = dateArray[0].charAt(4);
 		
 		int month = Integer.parseInt(dateArray[1]);
 		int day = Integer.parseInt(dateArray[2]);
 		calendar.set(year, month-1, day, 0,0,0);
 		startDate = calendar.getTime();
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //		startDate = simpleDateFormat.parse(startDateStr[0].trim());
+		Logger.out.println("start date for budget: " + simpleDateFormat.format(startDate));
 		// delete the first line
 		lines.remove(0);
 

@@ -33,6 +33,8 @@ import finance.reports.model.BudgetModel;
 import finance.reports.model.PieChartModel;
 
 public class Finance {
+	
+	// push/pull key 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
 
 	String baseProjectPath;
 	String downloadsDirectory;
@@ -90,14 +92,6 @@ public class Finance {
 			
 		finance.connect();
 
-		
-		Enumeration<Driver> drivers = DriverManager.getDrivers();
-		Driver driver = drivers.nextElement();
-		Logger.out.println("driver.toString()... " + driver.toString());
-
-		finance.createAccountDatabase();
-		finance.writeDatabaseToCSV("output.csv");
-		
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -108,6 +102,15 @@ public class Finance {
 		calendar1.add(Calendar.DATE, -40);
 		Date date2 = calendar1.getTime();
 		String dateStr1 = simpleDateFormat.format(date2);
+		
+		
+		Enumeration<Driver> drivers = DriverManager.getDrivers();
+		Driver driver = drivers.nextElement();
+		Logger.out.println("driver.toString()... " + driver.toString());
+
+		finance.createAccountDatabase();
+		finance.writeTransactionsToCSV("output.csv", dateStr1, dateStr2);
+		finance.writeDatabaseToCSV("output2.csv");
 		
 		PieChartModel pcm = new PieChartModel(finance.connection, basePath);
 		pcm.loadPieChartEntriesFromDatabase(dateStr1, dateStr2);
@@ -134,15 +137,34 @@ public class Finance {
 		finance.closeAll();
 	}
 
-	private void writeDatabaseToCSV(String filename) throws IOException, SQLException {
+	private void writeDatabaseToCSV(String filename) throws SQLException, IOException {
+		BigViewAccount bva = new BigViewAccount();		
+		bva.loadTransactionsFromDatabase(connection, null, null);
+		Logger.out.println("writing transactions to: " + baseProjectPath + filename);
+		bva.writeTransactionsToCSV(baseProjectPath+"/"+filename);		
+	}
+
+	private void writeTransactionsToCSV(String filename, String dateStr1, String dateStr2) throws IOException, SQLException {
 
 		// just write all Transactions from BigTXView
 		// the other option is to load memory/Transactions and print them... 
 		// but, we're not going to do that
 		BigViewAccount bva = new BigViewAccount();
-		bva.loadTransactionsFromDatabase(connection, null, null);
+		
+
+//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		
+//		Calendar calendar1 = GregorianCalendar.getInstance();
+//		Date date1 = calendar1.getTime();
+//		String dateStr2 = simpleDateFormat.format(date1);
+//
+//		calendar1.add(Calendar.DATE, -40);
+//		Date date2 = calendar1.getTime();
+//		String dateStr1 = simpleDateFormat.format(date2);
+		
+		bva.loadTransactionsFromDatabase(connection, dateStr1, dateStr2);
 		Logger.out.println("writing transactions to: " + baseProjectPath + filename);
-		bva.writeTransactionsToCSV(baseProjectPath+filename);
+		bva.writeTransactionsToCSV(baseProjectPath+"/"+filename);
 	}
 
 	private void closeAll() throws SQLException {
@@ -165,13 +187,13 @@ public class Finance {
 		Logger.out.println("loading transactions files from directory: " + downloadsDirectory);
 		soa.loadDirectory(downloadsDirectory);
 //		soa.loadTransactionsFromFile(downloadsDirectory+"statement_starone_2_06_10_2022_to_06_26_2022.csv");
-		soa.printTransactions();
+//		soa.printTransactions();
 
 		ChaseAccount chaseAccount = new ChaseAccount();
 		accounts.add(chaseAccount);
 		chaseAccount.loadDirectory(downloadsDirectory);
 //		chaseAccount.loadTransactionsFromFile(downloadsDirectory+"Chase3929_Activity20220610_20220627_20220627.CSV");
-		chaseAccount.printTransactions();
+//		chaseAccount.printTransactions();
 
 		Tables tables = new Tables(this.getConnection());
 

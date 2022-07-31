@@ -31,7 +31,7 @@ public class PieChartModel {
 	}
 	
 	public void writePieChartEntries() throws IOException {
-		PrintWriter file = new PrintWriter(new File(basePath+"pieChart.csv"));
+		PrintWriter file = new PrintWriter(new File(basePath+"/pieChart.csv"));
 		for(int i = 0; i < chartEntries.size(); i++) {
 			file.println(chartEntries.get(i).getCategory() + "," + chartEntries.get(i).getAmount());
 		}

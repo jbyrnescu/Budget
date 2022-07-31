@@ -26,7 +26,20 @@ public class BigViewAccount extends Account {
 
 	@Override
 	public void loadTransactionsFromDatabase(Connection c, String beginDate, String endDate) throws SQLException {
-		String queryString = "select * from BigTXView;";
+		
+		String and1 ="", and2 = "";
+		String endQuote = "'";
+		if (beginDate == null) {
+			beginDate = "";
+		} else and1 = " where transactionDate >= '" +beginDate+ endQuote;
+		if (endDate == null)
+		{ 
+			endDate = ""; 
+		} else and2 = " and transactionDate <= '" + endDate + endQuote;
+		
+		String queryString = "select * from BigTXView " + and1 + and2 + ";";
+
+		Logger.out.println("query is: " + queryString);
 		Statement s = c.createStatement();
 		ResultSet rs = s.executeQuery(queryString);
 		try {
