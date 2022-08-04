@@ -31,6 +31,7 @@ import db.Tables;
 import finance.Logger;
 import finance.reports.model.BudgetModel;
 import finance.reports.model.PieChartModel;
+import finance.reports.model.SuggestedSavingsModel;
 
 public class Finance {
 	
@@ -133,6 +134,10 @@ public class Finance {
 		b.loadBudgetFromFile("DollarsPerDayExpenditures.csv");
 		b.drawBudgetStatus();
 		b.writeEntries("Budget.csv");
+		
+		SuggestedSavingsModel ssm = new SuggestedSavingsModel(finance.connection, basePath);
+		ssm.loadBudgetFromFile("SavingsPercentages.csv");
+		ssm.writeEntries("SuggestedSavings.csv");
 		
 		finance.closeAll();
 	}
