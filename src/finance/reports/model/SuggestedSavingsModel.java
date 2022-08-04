@@ -88,7 +88,8 @@ public class SuggestedSavingsModel extends PieChartModel {
 	}
 	
 	private double getIncomeFromDatabase() throws SQLException {
-		String queryString = "select SUM(amount) from BigTXView where budgetCat = 'Income'";
+		String queryString = "select SUM(amount) from BigTXView where budgetCat = 'Income'"
+				+ "and transactionDate>'" + startStr + "';";
 		ResultSet rs = connection.createStatement().executeQuery(queryString);
 		return(rs.getFloat(1));
 	}
@@ -100,8 +101,6 @@ public class SuggestedSavingsModel extends PieChartModel {
 		try {
 		List<String> lines = Files.readAllLines(Paths.get(basePath+"/"+filename));
 
-
-		
 		String startDateStr[] = lines.get(0).split(",");
 		String dateArray[] = startDateStr[0].split("-");
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -131,7 +130,6 @@ public class SuggestedSavingsModel extends PieChartModel {
 		startStr = simpleDateFormat.format(startDate);
 		// delete the first line
 		lines.remove(0);
-
 	
 		// we skip the first line
 		for (String line : lines) {
