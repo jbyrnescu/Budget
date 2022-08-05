@@ -158,7 +158,7 @@ public class StarOneTransaction extends Transaction {
 		statement.setString(13, mandatory);
 		statement.setString(14, source);
 				
-		int numUpdates = statement.executeUpdate();
+		statement.executeUpdate();
 		return(TRANSACTION_LOADED);
 	}
 

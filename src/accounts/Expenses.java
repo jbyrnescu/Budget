@@ -74,10 +74,6 @@ public class Expenses extends BigViewAccount {
 		double[][] array = new double[2][numTransactions];
 		
 		float cumulativeAmount = 0.0f;
-		double sumXY = 0.0, sumXSquared = 0.0, sumY = 0.0, sumX = 0.0;
-		
-		double[][] testArray = { {1,2,3,4,5,6,7},
-				{1.5, 3.8, 6.7, 9.0, 11.2, 13.6, 16} };
 		
 		for (int i = 0; i < getNumberTransactions(); i++) {
 
@@ -191,10 +187,10 @@ public class Expenses extends BigViewAccount {
 		return(b);
 	}
 	
-	private double calculateYInterceptWithFirstPoint(double x, double y, double m) {
-		double b = y - m*x;
-		return(b);
-	}
+//	private double calculateYInterceptWithFirstPoint(double x, double y, double m) {
+//		double b = y - m*x;
+//		return(b);
+//	}
 
 	private double calculateSlope(int n, double[][] array) {
 		double m, sumX=0.0, sumY=0.0;
@@ -204,7 +200,7 @@ public class Expenses extends BigViewAccount {
 			sumY += array[1][i];
 		}
 		
-		double xDiff = 0.0, sumXDiff = 0.0, yDiff = 0.0, sumDiff = 0.0;
+		double xDiff = 0.0, yDiff = 0.0, sumDiff = 0.0;
 		double sumXDiffSquared = 0.0;
 		for (int i = 0; i < n; i++) {
 			xDiff = array[0][i] - sumX/n;

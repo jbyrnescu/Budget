@@ -6,7 +6,6 @@ import java.sql.SQLException;
 public class PieChartEntry {
 	private String category;
 	private double amount;
-	private double percentage;
 	
 	public String getCategory() {
 		return category;

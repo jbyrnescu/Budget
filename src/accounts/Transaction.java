@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -46,7 +45,7 @@ public abstract class Transaction {
 			
 			Statement s = connection.createStatement();
 			ResultSet rs = s.executeQuery(queryString);
-			ResultSetMetaData rsmd = rs.getMetaData();
+//			ResultSetMetaData rsmd = rs.getMetaData();
 			if (rs.next()) return TRANSACTION_EXISTS;
 			return NO_SIMILAR_TRANSACTIONS;
 		}

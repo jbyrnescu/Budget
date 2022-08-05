@@ -3,7 +3,6 @@ package db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 // This should really be done with Persistent classes and Spring, jpa what have you
 // However, I'm not very good with these frameworks and I don't want to spend the time
@@ -86,6 +85,7 @@ public class Tables {
 				"select TransactionDate, Description, amount, BudgetCat, XclFrmCshFlw, Mandatory, source from SavingsStarOneTXs\n"; 
 		s = connection.prepareStatement(BigTXViewString);
 		iReturnValue = s.executeUpdate();
+		System.out.println("return Value of last execute of table creation: " + iReturnValue);
 		
 	}
 	

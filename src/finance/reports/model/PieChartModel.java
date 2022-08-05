@@ -1,9 +1,7 @@
 package finance.reports.model;
 
 import java.awt.Dimension;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -75,12 +73,14 @@ public class PieChartModel {
 				
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void drawPieChart() {
 		if (chartEntries.size() < 1) 
 			{
 				Logger.out.println("No entries to display");
 				return;
 			}
+		@SuppressWarnings("rawtypes")
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (int i = 0; i < chartEntries.size(); i++) {
 			double amount = Math.abs(chartEntries.get(i).getAmount());

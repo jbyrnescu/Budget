@@ -1,10 +1,6 @@
 package finance;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -19,16 +15,14 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 
-import SqliteDBUtils.Column;
 import SqliteDBUtils.ColumnMap;
 import accounts.Account;
 import accounts.BigViewAccount;
 import accounts.ChaseAccount;
 import accounts.Expenses;
 import accounts.StarOneAccount;
-import db.Tables;
+//import db.Tables;
 
-import finance.Logger;
 import finance.reports.model.BudgetModel;
 import finance.reports.model.PieChartModel;
 import finance.reports.model.SuggestedSavingsModel;
@@ -206,9 +200,9 @@ public class Finance {
 //		chaseAccount.loadTransactionsFromFile(downloadsDirectory+"Chase3929_Activity20220610_20220627_20220627.CSV");
 //		chaseAccount.printTransactions();
 
-		Tables tables = new Tables(this.getConnection());
+//		Tables tables = new Tables(this.getConnection());
 
-		String schema = this.getConnection().getSchema();
+//		String schema = this.getConnection().getSchema();
 		String[] types = {"TABLE"};
 		ResultSet r = this.getConnection().getMetaData().getTables(null, null, "%", types);
 		while(r.next()) {
@@ -336,19 +330,19 @@ public class Finance {
 		}
 	}
 
-
-	private static void testConnection(Finance finance) throws SQLException {
-		Statement statement = finance.connection.createStatement();
-
-		statement.execute("Select * from BigTXView;");
-
-		ResultSet resultSet = statement.getResultSet();
-		while (resultSet.next())
-			for (int i = 1; i < resultSet.getMetaData().getColumnCount(); i++) {
-				Logger.out.println("i: " + i);
-				Logger.out.println(resultSet.getString(i));
-			}
-	}
+//
+//	private static void testConnection(Finance finance) throws SQLException {
+//		Statement statement = finance.connection.createStatement();
+//
+//		statement.execute("Select * from BigTXView;");
+//
+//		ResultSet resultSet = statement.getResultSet();
+//		while (resultSet.next())
+//			for (int i = 1; i < resultSet.getMetaData().getColumnCount(); i++) {
+//				Logger.out.println("i: " + i);
+//				Logger.out.println(resultSet.getString(i));
+//			}
+//	}
 
 
 

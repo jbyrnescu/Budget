@@ -2,7 +2,6 @@ package SqliteDBUtils;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Map;
 
 // 
 public class Column {

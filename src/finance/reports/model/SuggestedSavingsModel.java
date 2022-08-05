@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -28,10 +27,6 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultKeyedValueDataset;
-import org.jfree.data.general.KeyedValueDataset;
-
-import accounts.StarOneTransaction;
 import finance.Logger;
 
 public class SuggestedSavingsModel extends PieChartModel {
@@ -109,16 +104,16 @@ public class SuggestedSavingsModel extends PieChartModel {
 		String yearStr;
 		// UTF-8 has a character 16 bit character code which istn' interpretted properly here
 		// So, I try to fix that.
-		char a;
-		if ((a = dateArray[0].charAt(0)) != '2') {
+//		char a;
+		if ((dateArray[0].charAt(0)) != '2') {
 			yearStr = dateArray[0].substring(1);
 			year = Integer.parseInt(yearStr);
 		} else
 			year = Integer.parseInt(dateArray[0].trim());
 		
-		char b = dateArray[0].charAt(1);
-		char c = dateArray[0].charAt(2);
-		char d = dateArray[0].charAt(3);
+//		char b = dateArray[0].charAt(1);
+//		char c = dateArray[0].charAt(2);
+//		char d = dateArray[0].charAt(3);
 		
 		int month = Integer.parseInt(dateArray[1]);
 		int day = Integer.parseInt(dateArray[2]);
