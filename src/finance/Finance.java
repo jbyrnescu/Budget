@@ -257,7 +257,7 @@ public class Finance {
 	private void markMandatory() throws SQLException {
 		for (int accountNum = 0; accountNum < accounts.size(); accountNum++) {
 			String source = accounts.get(accountNum).getSourceName();
-			for (String key : categoriesMap.keySet()) {
+			for (String key : mandatoryMap.keySet()) {
 				String queryString = "update " + source + " set Mandatory=\"" + mandatoryMap.get(key) +
 						"\" where Description like \"%" + key + "%\";";
 				Logger.out.println("updating: " + queryString);
