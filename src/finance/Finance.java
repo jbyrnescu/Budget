@@ -65,6 +65,14 @@ public class Finance {
 			Logger.out.println(i + ":" + args[i]);
 		}
 
+		if (args.length < 2) {
+			Logger.out.println("incorrect number of arguments");
+			Logger.out.println("usage: java -cp Finance.jar finance.Finance <output Directory> <input directory>");
+			Logger.out.println("the output directory contains pieChart.csv and other .csv files loaded into spreadsheet");
+			Logger.out.println("the input directory has all of the bank files in it");
+			Logger.out.println("Transactions are unique over amount, transaction date, and description");
+			System.exit(-1);
+		}
 		
 		String downloadPath= System.getenv("FINANCE_DOWNLOADS_PATH");
 		String basePath = System.getenv("FINANCE_BASE_PATH");
