@@ -35,8 +35,6 @@ import finance.reports.model.SuggestedSavingsModel;
 
 public class Finance {
 	
-	// push/pull key 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
-
 	String baseProjectPath;
 	String downloadsDirectory;
 	ArrayList<Account> accounts = new ArrayList<Account>();
