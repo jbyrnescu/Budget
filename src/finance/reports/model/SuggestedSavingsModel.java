@@ -213,16 +213,21 @@ public class SuggestedSavingsModel extends PieChartModel {
 			endDate = ""; 
 		} else and2 = " and transactionDate <= \"" + endDate + endQuote;
 		
-		String query = "select BudgetCat,sum(amount) as amount from BigTXView "
+		StringBuffer query = new StringBuffer("select BudgetCat,sum(amount) as amount from BigTXView "
 				+ " where "
-				+ " budgetCat in ('Transfer Savings', 'Transfer Wants') "
+				+ " budgetCat in (");
+		for(String key : suggestedAmounts.keys()) {
+		query.append("'" + key + "',")
+		}
+		query.
+		query.append(") "
 				+ " and "
 				+ " budgetCat not like \"%ayment%\" "
 				+ " and budgetCat not like \"%Income%\" "
 				+ and1
 				+ and2
 				+ " group by BudgetCat "
-				+ " order by sum(amount) asc;";
+				+ " order by sum(amount) asc;");
 		
 		Logger.out.println("query for pie chart: " + query);
 		
