@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -216,10 +217,18 @@ public class SuggestedSavingsModel extends PieChartModel {
 		StringBuffer query = new StringBuffer("select BudgetCat,sum(amount) as amount from BigTXView "
 				+ " where "
 				+ " budgetCat in (");
-		for(String key : suggestedAmounts.keys()) {
-		query.append("'" + key + "',")
+		
+		
+		Set<String> keySet = suggestedAmounts.keySet();
+		Object[] keySetArray = keySet.toArray();
+		
+		query.append("'" + keySetArray[0].toString() + "'");
+		
+		for(int i = 1; i < keySetArray.length; i++) {
+			query.append(",'" + keySetArray[i].toString()  + "'");
 		}
-		query.
+
+//		query.replace(query.indexOf(","), query.indexOf(","), "");
 		query.append(") "
 				+ " and "
 				+ " budgetCat not like \"%ayment%\" "
@@ -232,7 +241,7 @@ public class SuggestedSavingsModel extends PieChartModel {
 		Logger.out.println("query for pie chart: " + query);
 		
 				Statement s = connection.createStatement();
-				ResultSet rs = s.executeQuery(query);
+				ResultSet rs = s.executeQuery(query.toString());
 				int numberOfEntries = 0;
 				while(rs.next()) {
 					PieChartEntry pce = new PieChartEntry();
