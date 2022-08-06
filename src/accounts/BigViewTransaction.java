@@ -1,4 +1,4 @@
-package accounts;
+package src.accounts;
 
 import java.sql.Connection;
 import java.sql.SQLException;

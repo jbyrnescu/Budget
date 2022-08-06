@@ -1,4 +1,4 @@
-package finance;
+package src.finance;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,17 +15,17 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 
-import SqliteDBUtils.ColumnMap;
-import accounts.Account;
-import accounts.BigViewAccount;
-import accounts.ChaseAccount;
-import accounts.Expenses;
-import accounts.StarOneAccount;
+import src.SqliteDBUtils.ColumnMap;
+import src.accounts.Account;
+import src.accounts.BigViewAccount;
+import src.accounts.ChaseAccount;
+import src.accounts.Expenses;
+import src.accounts.StarOneAccount;
 //import db.Tables;
 
-import finance.reports.model.BudgetModel;
-import finance.reports.model.PieChartModel;
-import finance.reports.model.SuggestedSavingsModel;
+import src.finance.reports.model.BudgetModel;
+import src.finance.reports.model.PieChartModel;
+import src.finance.reports.model.SuggestedSavingsModel;
 
 public class Finance {
 	

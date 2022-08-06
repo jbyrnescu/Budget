@@ -1,4 +1,4 @@
-package finance.reports.model;
+package src.finance.reports.model;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import finance.Logger;
+import src.finance.Logger;
 
 import org.jfree.chart.*;
 import org.jfree.data.general.DefaultPieDataset;

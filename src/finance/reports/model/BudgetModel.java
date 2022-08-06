@@ -1,4 +1,4 @@
-package finance.reports.model;
+package src.finance.reports.model;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -25,7 +25,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
-import finance.Logger;
+import src.finance.Logger;
 
 public class BudgetModel extends PieChartModel {
 	

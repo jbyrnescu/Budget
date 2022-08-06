@@ -1,4 +1,4 @@
-package accounts;
+package src.accounts;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import finance.Logger;
+import src.finance.Logger;
 
 public abstract class Transaction {
 	// This class holds the generalized, most abstract aspects of an account

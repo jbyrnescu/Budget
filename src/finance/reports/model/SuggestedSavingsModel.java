@@ -1,4 +1,4 @@
-package finance.reports.model;
+package src.finance.reports.model;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -28,7 +28,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
-import finance.Logger;
+import src.finance.Logger;
 
 public class SuggestedSavingsModel extends PieChartModel {
 	
@@ -219,18 +219,16 @@ public class SuggestedSavingsModel extends PieChartModel {
 				+ " budgetCat in (");
 		
 		
-		Set keySet = suggestedAmounts.keySet();
-		String[] keySetArray = keySet.toArray();
+		Set<String> keySet = suggestedAmounts.keySet();
+		Object[] keySetArray = keySet.toArray();
 		
-		query.append("'" + keySetArray[0] + "'");
+		query.append("'" + keySetArray[0].toString() + "'");
 		
 		for(int i = 1; i < keySetArray.length; i++) {
-			query.append(",'" + key + "'");
+			query.append(",'" + keySetArray[i].toString()  + "'");
 		}
 
-		suggestedAmounts.get
-		
-		query.replace(query.length-1, query.length-1, "");
+//		query.replace(query.indexOf(","), query.indexOf(","), "");
 		query.append(") "
 				+ " and "
 				+ " budgetCat not like \"%ayment%\" "
@@ -243,7 +241,7 @@ public class SuggestedSavingsModel extends PieChartModel {
 		Logger.out.println("query for pie chart: " + query);
 		
 				Statement s = connection.createStatement();
-				ResultSet rs = s.executeQuery(query);
+				ResultSet rs = s.executeQuery(query.toString());
 				int numberOfEntries = 0;
 				while(rs.next()) {
 					PieChartEntry pce = new PieChartEntry();

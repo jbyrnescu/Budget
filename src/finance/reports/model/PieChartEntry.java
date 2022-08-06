@@ -1,4 +1,4 @@
-package finance.reports.model;
+package src.finance.reports.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package finance.reports.model;
+package src.finance.reports.model;
 
 public class BudgetItem {
 	

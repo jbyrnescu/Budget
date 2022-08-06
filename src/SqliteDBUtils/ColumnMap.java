@@ -1,4 +1,4 @@
-package SqliteDBUtils;
+package src.SqliteDBUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import finance.Logger;
+import src.finance.Logger;
 
 public class ColumnMap<K, V> {
 	Map<String, String> columnMap;

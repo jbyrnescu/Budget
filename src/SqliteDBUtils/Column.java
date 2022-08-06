@@ -1,4 +1,4 @@
-package SqliteDBUtils;
+package src.SqliteDBUtils;
 
 import java.sql.Connection;
 import java.util.ArrayList;

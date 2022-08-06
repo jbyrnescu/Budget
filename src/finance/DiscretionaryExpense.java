@@ -1,4 +1,4 @@
-package finance;
+package src.finance;
 
 public class DiscretionaryExpense extends Expense {
 

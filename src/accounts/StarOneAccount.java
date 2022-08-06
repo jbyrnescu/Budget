@@ -1,4 +1,4 @@
-package accounts;
+package src.accounts;
 
 import java.io.IOException;
 import java.nio.file.Files;

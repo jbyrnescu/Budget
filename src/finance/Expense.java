@@ -1,11 +1,11 @@
-package finance;
+package src.finance;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-import accounts.Transaction;
+import src.accounts.Transaction;
 
 public class Expense extends Transaction {
 	

@@ -1,7 +1,7 @@
-package accounts;
+package src.accounts;
 
 import java.io.BufferedWriter;
-import finance.Logger;
+import src.finance.Logger;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;

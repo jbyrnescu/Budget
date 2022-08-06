@@ -1,4 +1,4 @@
-package accounts;
+package src.accounts;
 
 import java.awt.Dimension;
 import java.sql.Connection;
@@ -19,7 +19,7 @@ import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
-import finance.Logger;
+import src.finance.Logger;
 
 public class Expenses extends BigViewAccount {
 	
