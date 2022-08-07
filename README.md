@@ -15,9 +15,13 @@ There are 2 arguments above in between the <>.
 Here are the names of the files:
 Input:
 Categorize.csv under <baseDirectory>/Categorized directory
+  
 MandatoryMap.csv under <baseDirectory>/MarkMandatory/
+  
 XcldFrmCshFlw.csv under <baseDirectory>
+  
 DollarsPerDayExpenditures.csv under <baseDirectory>
+  
 and
 SavingsPercentages.csv under <baseDirectory>
 
