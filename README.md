@@ -9,7 +9,9 @@ followed by your plan, to your spending.
 To run this program download either the linux branch or the master branch.
 If it's the master branch there should be a file called FinanceMac.jar
 After creating the appropriate files (in the source code for now) run the program as follows:
+
 java -cp FinanceMac.jar finance.Finance "path to your base directory where you keep all of the input and output files" "path and file to Chase & StarOne files"
+
 There are 2 arguments above in between the <>.
 
 Here are the names of the files:
