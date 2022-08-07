@@ -9,7 +9,21 @@ followed by your plan, to your spending.
 To run this program download either the linux branch or the master branch.
 If it's the master branch there should be a file called FinanceMac.jar
 After creating the appropriate files (in the source code for now) run the program as follows:
-java -cp FinanceMac.jar <path to your base directory where you keep all of the output files> <path and file to Chase & StarOne files>
+java -cp FinanceMac.jar finance.Finance <path to your base directory where you keep all of the output files> <path and file to Chase & StarOne files>
 There are 2 arguments above in between the <>.
 
 Here are the names of the files:
+Input:
+Categorize.csv under <baseDirectory>/Categorized directory
+MandatoryMap.csv under <baseDirectory>/MarkMandatory/
+XcldFrmCshFlw.csv under <baseDirectory>
+DollarsPerDayExpenditures.csv under <baseDirectory>
+and
+SavingsPercentages.csv under <baseDirectory>
+
+Ideally and theoretically, after you've created all of these files the program should go through the 
+entire sequence.
+
+If you don't want to load the latest version of Java the linux version works with JRE 11.
+The calling of this program is different as well:
+java -cp FinanceLinux.jar src.finance.Finance <path a as above> <path b as above>
