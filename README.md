@@ -29,7 +29,7 @@ and
 SavingsPercentages.csv under "baseDirectory"
 
 Ideally and theoretically, after you've created all of these files the program should go through the 
-entire sequence.
+entire sequence.  There is an example of these files in the relative directories.  There are a total of 5 files to create.
 
 If you don't want to load the latest version of Java the linux version works with JRE 11.
 The calling of this program is different as well:
