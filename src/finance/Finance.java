@@ -22,7 +22,7 @@ import accounts.ChaseAccount;
 import accounts.Expenses;
 import accounts.StarOneAccount;
 //import db.Tables;
-
+import db.Tables;
 import finance.reports.model.BudgetModel;
 import finance.reports.model.PieChartModel;
 import finance.reports.model.SuggestedSavingsModel;
@@ -200,7 +200,7 @@ public class Finance {
 //		chaseAccount.loadTransactionsFromFile(downloadsDirectory+"Chase3929_Activity20220610_20220627_20220627.CSV");
 //		chaseAccount.printTransactions();
 
-//		Tables tables = new Tables(this.getConnection());
+		Tables tables = new Tables(this.getConnection());
 
 //		String schema = this.getConnection().getSchema();
 		String[] types = {"TABLE"};
