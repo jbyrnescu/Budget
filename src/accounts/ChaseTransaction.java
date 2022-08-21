@@ -62,6 +62,8 @@ public class ChaseTransaction extends Transaction {
 
 	@Override
 	public int loadIntoDatabase(Connection connection) throws SQLException {
+		if (super.loadIntoDatabase(connection) == Transaction.TRANSACTION_EXISTS)
+			return(NOTHING_LOADED);
 		PreparedStatement statement = connection.prepareStatement("insert or ignore into VisaChaseTXs ("
 				+ "TransactionDate, PostDate, Description, Category, TransactionType, Amount, "
 				+ "Memo, "

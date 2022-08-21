@@ -35,19 +35,19 @@ public abstract class Transaction {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
 			String transactionDateString = simpleDateFormat.format(transactionDate);
 			
-//			Logger.out.println("Checking for existing transaction");
-//			String queryString = "select * from BigTXView where "
-//					+ " transactionDate = \"" + transactionDateString + "\""
-//					+ " and description = \"" + description + "\""
-//					+ " and amount = " + amount;
+			Logger.out.println("Checking for existing transaction");
+			String queryString = "select * from BigTXView where "
+					+ " transactionDate = \"" + transactionDateString + "\""
+					+ " and description = \"" + description + "\""
+					+ " and amount = " + amount;
 			
 			
 			
-//			Statement s = connection.createStatement();
-//			ResultSet rs = s.executeQuery(queryString);
+			Statement s = connection.createStatement();
+			ResultSet rs = s.executeQuery(queryString);
 //			ResultSetMetaData rsmd = rs.getMetaData();
-//			if (rs.next()) return TRANSACTION_EXISTS;
-			return NOTHING_LOADED;
+			if (rs.next()) return TRANSACTION_EXISTS;
+			return NO_SIMILAR_TRANSACTIONS;
 		}
 		public abstract void populateTransactionFromString(String line) throws ParseException;
 
