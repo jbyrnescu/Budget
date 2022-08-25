@@ -238,7 +238,7 @@ public class SuggestedSavingsModel extends PieChartModel {
 				+ " group by BudgetCat "
 				+ " order by sum(amount) asc;");
 		
-		Logger.out.println("query for pie chart: " + query);
+		Logger.out.println("query for suggested savings model: " + query);
 		
 				Statement s = connection.createStatement();
 				ResultSet rs = s.executeQuery(query.toString());
