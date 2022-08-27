@@ -118,21 +118,23 @@ public class Expenses extends BigViewAccount {
 		trendline1Dataset.addSeries("Trendline Cum Amnt m=" + m*1000*60*60*24,trendline1Array);
 		xyPlot.setDataset(6,trendline1Dataset);
 		xyPlot.setRenderer(1,dotR);
-		
-		// for income dataset and trendline
-		xyPlot.setDataset(2,incomeDataset);
-		xyPlot.setDataset(3,incomeDataset);
-		xyPlot.setRenderer(3,dotR);
-		double[][] incomePointSet = incomes.getArrayOfPoints();
-		m = calculateSlope(incomes.getNumberTransactions(), incomePointSet);
-		b = calculateYIntercept(m, incomes.getNumberTransactions(), incomePointSet);
-		double[][] incomeTrendLine = getTrendlineXY(incomes.getNumberTransactions(),
-						incomePointSet,
-						m, b);
-		DefaultXYDataset incomeTrendLineDataset = new DefaultXYDataset();
-		incomeTrendLineDataset.addSeries("Trendline Income m=" + m*1000*60*60*24, incomeTrendLine);
-		xyPlot.setDataset(7,incomeTrendLineDataset);
-		
+
+		if (incomes.getNumberTransactions() > 0) {
+			// for income dataset and trendline
+			xyPlot.setDataset(2, incomeDataset);
+			xyPlot.setDataset(3, incomeDataset);
+			xyPlot.setRenderer(3, dotR);
+			double[][] incomePointSet = incomes.getArrayOfPoints();
+			m = calculateSlope(incomes.getNumberTransactions(), incomePointSet);
+			b = calculateYIntercept(m, incomes.getNumberTransactions(), incomePointSet);
+			double[][] incomeTrendLine = getTrendlineXY(incomes.getNumberTransactions(),
+					incomePointSet,
+					m, b);
+			DefaultXYDataset incomeTrendLineDataset = new DefaultXYDataset();
+			incomeTrendLineDataset.addSeries("Trendline Income m=" + m * 1000 * 60 * 60 * 24, incomeTrendLine);
+			xyPlot.setDataset(7, incomeTrendLineDataset);
+		}
+
 		// for Mandatory Expenses dataset
 		xyPlot.setDataset(4,mtDataset);
 		xyPlot.setDataset(5,mtDataset);
