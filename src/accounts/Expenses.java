@@ -202,7 +202,7 @@ public class Expenses extends BigViewAccount {
 			sumY += array[1][i];
 		}
 		
-		double xDiff = 0.0, yDiff = 0.0, sumDiff = 0.0;
+		double xDiff, yDiff, sumDiff = 0.0;
 		double sumXDiffSquared = 0.0;
 		for (int i = 0; i < n; i++) {
 			xDiff = array[0][i] - sumX/n;
