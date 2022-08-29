@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
+import finance.Logger;
+
 public class Incomes extends BigViewAccount {
 	
 	private static double[][] array;
@@ -28,6 +30,8 @@ public class Incomes extends BigViewAccount {
 				+ and1
 				+ and2
 				+ "and amount > 0;";
+		
+		Logger.out.print("statement for income line: " + query + "\n");
 
 		ResultSet rs = c.createStatement().executeQuery(query);
 		while(rs.next()) {
