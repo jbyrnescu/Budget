@@ -12,7 +12,7 @@ public class ChaseAccount extends Account {
 	
 	public ChaseAccount() {
 		sourceName = "VisaChaseTXs";
-		filenamePrefix="Chase3929_Activity.*";
+		filenamePrefix="Chase.*";
 	}
 
 	@Override
