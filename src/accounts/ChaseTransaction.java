@@ -82,7 +82,7 @@ public class ChaseTransaction extends Transaction {
 		statement.setString(5, transactionType);
 		statement.setDouble(6, getAmount());
 		statement.setString(7, getMemo());
-		statement.setString(8, getBudgetCat());
+		statement.setString(8, Category);
 		statement.setString(9, getXcludeFromCashFlow());
 		statement.setString(10, getMandatory());
 		statement.setString(11, "VisaChaseTXs");

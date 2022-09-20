@@ -50,7 +50,8 @@ public class Expenses extends BigViewAccount {
 				+ and1
 				+ and2
 				+ "and amount < 0 "
-				+ "and BudgetCat not like '%ncome%';";
+				+ "and ((BudgetCat not like '%ncome%') or (BudgetCat is null));";
+//				+ "and BudgetCat not like '%ncome%' ; ";
 		Logger.out.print("query for loading expenses, Cumulative Cash Flow \n" + query+"\n");
 		ResultSet rs = c.createStatement().executeQuery(query);
 		while(rs.next()) {
