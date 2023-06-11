@@ -131,7 +131,7 @@ public class StarOneTransaction extends Transaction {
 		// all we do is zero out the creditAmount & debitAmount after we calculate credit-debit for
 		// amount.
 		
-		this.amount = creditAmount - debitAmount;
+		this.amount = creditAmount - Math.abs(debitAmount);
 	}
 	@Override
 	public int loadIntoDatabase(Connection connection) throws SQLException {

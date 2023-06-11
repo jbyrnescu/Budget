@@ -35,6 +35,9 @@ public abstract class Transaction {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
 			String transactionDateString = simpleDateFormat.format(transactionDate);
 			
+			// description can't have any double quotes in it.  So we'll strip them.
+			description = description.replace("\"","");
+			
 			Logger.out.println("Checking for existing transaction");
 			String queryString = "select * from BigTXView where "
 					+ " transactionDate = \"" + transactionDateString + "\""
